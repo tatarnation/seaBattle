@@ -54,7 +54,7 @@ export const fill2dArray = (arr, value) => {
 export const fillRand2dArray = (arr) => {
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[i].length; j++) {
-            arr[i][j] = Math.random();
+            arr[i][j] = Object.assign(arr[i][j], { haveShip: Math.floor(Math.random() * (1 - 0 + 1)) + 0 == false });
         }
     }
 }
@@ -87,8 +87,6 @@ export const drawField = (PIXI, arr, app, size, offset) => {
                 fieldView.drawRect(coordX + offset, coordY + offset, size, size);
                 fieldView.endFill();
             }
-
-
             // const style = new PIXI.TextStyle({
             //     fontFamily: 'Arial',
             //     fontSize: 14,
@@ -100,24 +98,9 @@ export const drawField = (PIXI, arr, app, size, offset) => {
             //     wordWrap: true,
             //     wordWrapWidth: 440,
             // })
-
             // const basicText = new PIXI.Text(arr[i][j].id.toString(), style);
             // basicText.x = coordX + offset;
             // basicText.y = coordY + offset;
-
-            fieldView.on('pointerdown', function () {
-
-            });
-            fieldView.on('pointerover', function () {
-                this.beginFill(0xFFFFFF);
-                this.drawRect(coordX + offset, coordY + offset, size, size);
-                this.endFill();
-            });
-            fieldView.on('pointerout', function () {
-                this.beginFill(0xDE3249);
-                this.drawRect(coordX + offset, coordY + offset, size, size);
-                this.endFill();
-            });
             app.stage.addChild(fieldView);
             //app.stage.addChild(basicText);
 
@@ -125,6 +108,102 @@ export const drawField = (PIXI, arr, app, size, offset) => {
     }
 }
 
+export const randomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
+}
+
+/**
+ * 
+ * @param {[][]} arr 
+ * @param {number} shipCells 
+ */
+
 export const insertShip = (arr, shipCells) => {
-    // ????????????
+
+
+    const rndC = randomInt(0, arr.length - 1);
+    const rndR = randomInt(0, arr[0].length - 1);
+
+    //const randomCell = arr[rndC][rndR]; //
+
+    let allFree = false;
+
+    while (!allFree) {
+        const dir = randomInt(0, 1);
+        switch (dir) {
+            case 0:
+                if (arr[rndC][rndR] != undefined && arr[rndC + 1][rndR] != undefined && arr[rndC + 2][rndR] != undefined) {
+                    if (!arr[rndC][rndR].haveShip && !arr[rndC + 1][rndR].haveShip && !arr[rndC + 2][rndR].haveShip) {
+                        console.log('free');
+                        arr[rndC][rndR].haveShip = true;
+                        arr[rndC + 1][rndR].haveShip = true;
+                        arr[rndC + 2][rndR].haveShip = true;
+                        allFree = true;
+                    };
+                }
+                break;
+            case 1:
+                if (arr[rndC][rndR] != undefined && arr[rndC][rndR + 1] != undefined && arr[rndC][rndR + 2] != undefined) {
+                    if (!arr[rndC][rndR].haveShip && !arr[rndC][rndR + 1].haveShip && !arr[rndC][rndR + 2].haveShip) {
+                        console.log('free');
+                        arr[rndC][rndR].haveShip = true;
+                        arr[rndC][rndR + 1].haveShip = true;
+                        arr[rndC][rndR + 2].haveShip = true;
+                        allFree = true;
+                    };
+                }
+                break;
+            default:
+                allFree = false;
+                break;
+        }
+
+    }
+}
+
+//todo: починить can't read property....
+export const insertShipV2 = (arr, shipCells) => {
+
+
+    const rndC = randomInt(0, arr.length - 1);
+    const rndR = randomInt(0, arr[0].length - 1);
+
+    //const randomCell = arr[rndC][rndR]; //
+
+    let allFree = false;
+
+    while (!allFree) {
+        const dir = randomInt(0, 1);
+        switch (dir) {
+            case 0:
+                for (let i = 0; i < shipCells; i++) {
+
+                    if (arr[rndC + i][rndR] !== undefined && !arr[rndC + i][rndR].haveShip) {
+                        arr[rndC + i][rndR].haveShip = true;
+                    }
+
+                }
+                allFree = true;
+                break;
+            case 1:
+                for (let i = 0; i < shipCells; i++) {
+
+                    if (arr[rndC][rndR + i] !== undefined && !arr[rndC + i][rndR].haveShip) {
+                        arr[rndC][rndR + i].haveShip = true;
+                    }
+
+                }
+                allFree = true;
+                break;
+            default:
+                allFree = false;
+                break;
+        }
+
+    }
+
+
+
 }
