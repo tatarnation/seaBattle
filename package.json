@@ -1,0 +1,15 @@
+{
+  "name": "pixi-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "parcel index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel-bundler": "^1.12.3",
+    "pixi.js": "^5.1.5"
+  }
+}
