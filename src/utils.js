@@ -32,7 +32,7 @@ export const get2dArrayLength = (arr) => {
 export const generateCells = (arr) => {
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[i].length; j++) {
-            arr[j][i] = {
+            arr[i][j] = {
                 id: (i * arr.length + j) + 1,
                 haveShip: false,
                 isExployed: false
@@ -87,22 +87,22 @@ export const drawField = (PIXI, arr, app, size, offset) => {
                 fieldView.drawRect(coordX + offset, coordY + offset, size, size);
                 fieldView.endFill();
             }
-            // const style = new PIXI.TextStyle({
-            //     fontFamily: 'Arial',
-            //     fontSize: 14,
-            //     fontStyle: 'italic',
-            //     fontWeight: 'bold',
-            //     fill: ['#ffffff', '#00ff99'], // gradient
-            //     stroke: '#4a1850',
-            //     strokeThickness: 5,
-            //     wordWrap: true,
-            //     wordWrapWidth: 440,
-            // })
-            // const basicText = new PIXI.Text(arr[i][j].id.toString(), style);
-            // basicText.x = coordX + offset;
-            // basicText.y = coordY + offset;
+            const style = new PIXI.TextStyle({
+                fontFamily: 'Arial',
+                fontSize: 14,
+                fontStyle: 'italic',
+                fontWeight: 'bold',
+                fill: ['#ffffff', '#00ff99'], // gradient
+                stroke: '#4a1850',
+                strokeThickness: 5,
+                wordWrap: true,
+                wordWrapWidth: 440,
+            })
+            const basicText = new PIXI.Text(arr[i][j].id.toString(), style);
+            basicText.x = coordX + offset;
+            basicText.y = coordY + offset;
             app.stage.addChild(fieldView);
-            //app.stage.addChild(basicText);
+            app.stage.addChild(basicText);
 
         }
     }
@@ -176,6 +176,7 @@ export const insertShipV2 = (arr, shipCells) => {
 
     while (!allFree) {
         const dir = randomInt(0, 1);
+        console.log("dir=" + dir);
         switch (dir) {
             case 0:
                 for (let i = 0; i < shipCells; i++) {
@@ -183,17 +184,19 @@ export const insertShipV2 = (arr, shipCells) => {
                     if (arr[rndC + i][rndR] !== undefined && !arr[rndC + i][rndR].haveShip) {
                         arr[rndC + i][rndR].haveShip = true;
                     }
-
+                    console.log("rows");
+                    console.log(arr[rndC + i][rndR]);
                 }
                 allFree = true;
                 break;
             case 1:
                 for (let i = 0; i < shipCells; i++) {
 
-                    if (arr[rndC][rndR + i] !== undefined && !arr[rndC + i][rndR].haveShip) {
+                    if (arr[rndC][rndR + i] !== undefined && !arr[rndC][rndR + i].haveShip) {
                         arr[rndC][rndR + i].haveShip = true;
                     }
-
+                    console.log("cols");
+                    console.log(arr[rndC][rndR + i]);
                 }
                 allFree = true;
                 break;
