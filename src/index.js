@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import { create2dArray, drawField, generateCells, insertShipV2, insertShip } from './utils';
+import { create2dArray, drawField, generateCells, insertShipV2 } from './utils';
 
 const app = new PIXI.Application({
     backgroundColor: 0xABCDEF
@@ -22,16 +22,16 @@ generateCells(field);
 
 //fillRand2dArray(field);
 
+insertShipV2(field, 1);
+insertShipV2(field, 1);
+insertShipV2(field, 1);
+insertShipV2(field, 1);
+insertShipV2(field, 2);
+insertShipV2(field, 2);
+insertShipV2(field, 2);
+insertShipV2(field, 3);
+insertShipV2(field, 3);
 insertShipV2(field, 4);
-insertShipV2(field, 3);
-insertShipV2(field, 3);
-insertShipV2(field, 2);
-insertShipV2(field, 2);
-insertShipV2(field, 2);
-insertShipV2(field, 1);
-insertShipV2(field, 1);
-insertShipV2(field, 1);
-insertShipV2(field, 1);
 
 
 drawField(PIXI, field, app, 80, 100);
