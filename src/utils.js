@@ -114,56 +114,11 @@ export const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
 }
 
-/**
- * 
- * @param {[][]} arr 
- * @param {number} shipCells 
- */
-
-export const insertShip = (arr, shipCells) => {
-
-
-    const rndC = randomInt(0, arr.length - 1);
-    const rndR = randomInt(0, arr[0].length - 1);
-
-    //const randomCell = arr[rndC][rndR]; //
-
-    let allFree = false;
-
-    while (!allFree) {
-        const dir = randomInt(0, 1);
-        switch (dir) {
-            case 0:
-                if (arr[rndC][rndR] != undefined && arr[rndC + 1][rndR] != undefined && arr[rndC + 2][rndR] != undefined) {
-                    if (!arr[rndC][rndR].haveShip && !arr[rndC + 1][rndR].haveShip && !arr[rndC + 2][rndR].haveShip) {
-                        console.log('free');
-                        arr[rndC][rndR].haveShip = true;
-                        arr[rndC + 1][rndR].haveShip = true;
-                        arr[rndC + 2][rndR].haveShip = true;
-                        allFree = true;
-                    };
-                }
-                break;
-            case 1:
-                if (arr[rndC][rndR] != undefined && arr[rndC][rndR + 1] != undefined && arr[rndC][rndR + 2] != undefined) {
-                    if (!arr[rndC][rndR].haveShip && !arr[rndC][rndR + 1].haveShip && !arr[rndC][rndR + 2].haveShip) {
-                        console.log('free');
-                        arr[rndC][rndR].haveShip = true;
-                        arr[rndC][rndR + 1].haveShip = true;
-                        arr[rndC][rndR + 2].haveShip = true;
-                        allFree = true;
-                    };
-                }
-                break;
-            default:
-                allFree = false;
-                break;
-        }
-
-    }
-}
-
 //todo: починить can't read property....
+//Возможно придётся переписать пол кода
+//интересно почему проверка на сущесвтвование элемента массива не срабатывает..
+//скорее всего я тупой... хотя наверное так оно и есть
+//ещё оно пропускает некоторые корабли, скорее из-за того что алгоритм не может подобрать нужные элементы массива
 export const insertShipV2 = (arr, shipCells) => {
 
 
@@ -181,9 +136,13 @@ export const insertShipV2 = (arr, shipCells) => {
             case 0:
                 for (let i = 0; i < shipCells; i++) {
 
-                    if (arr[rndC + i][rndR] !== undefined && !arr[rndC + i][rndR].haveShip) {
-                        arr[rndC + i][rndR].haveShip = true;
-                    }
+                    if (arr[rndC + i][rndR] === undefined) break;
+                    if (arr[rndC + i][rndR].haveShip) break;
+                    if (arr[rndC + i][rndR + 1].haveShip) break;
+                    if (arr[rndC + i][rndR - 1].haveShip) break;
+
+                    arr[rndC + i][rndR].haveShip = true;
+
                     console.log("rows");
                     console.log(arr[rndC + i][rndR]);
                 }
@@ -192,9 +151,12 @@ export const insertShipV2 = (arr, shipCells) => {
             case 1:
                 for (let i = 0; i < shipCells; i++) {
 
-                    if (arr[rndC][rndR + i] !== undefined && !arr[rndC][rndR + i].haveShip) {
-                        arr[rndC][rndR + i].haveShip = true;
-                    }
+                    if (arr[rndC][rndR + i] === undefined) break;
+                    if (arr[rndC][rndR + i].haveShip) break;
+                    if (arr[rndC + 1][rndR + i].haveShip) break;
+                    if (arr[rndC - 1][rndR + i].haveShip) break;
+
+                    arr[rndC][rndR + i].haveShip = true;
                     console.log("cols");
                     console.log(arr[rndC][rndR + i]);
                 }
